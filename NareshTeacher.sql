@@ -31,7 +31,7 @@
 	--   Alter -Alter Column 
 	--   Alter -Add
 	--   SP_Rename
-	--   Alter-Drop
+	--   Alter-Drop Column
 
 				-- Change datatype and size of column
 				alter table Employee_details alter Column fname Varchar(100)
