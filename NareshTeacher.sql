@@ -9,9 +9,14 @@
 
 --2. How to create a new Database in SQL Server Using "CUI" and "GUI" 
  create database MyClassDB    
- 
+ ddl _ data definition language
+ dml _ data manipulation language
+ dql _ data query language
+ dcl _ data control language..
+ TCL _ transaction control language.
+
 --working with Sub-Language of SQL (DDL,DML,DQL,TCL,DCL Command)
---Part A =>  "DDL"(Crete,Alter,SP_rename,Turncate, & Drop Column)-----------------
+--Part A =>  "DDL" *data definition language *  (Crete,Alter,SP_rename,Turncate, & Drop Column)-----------------
      --Crete table :
 		--1.Crete Database
 		create database xaller		
@@ -140,7 +145,7 @@
 			--way of insert data in child "Employe" Table
 			insert into employee values(10,'rakesh',40000,1),(11,'rajesh',10000,2);
 			insert into employee values(10,'rakesh',40000,3);
-		    insert into employee values(10,'rakesh',40000,4)  -- not allowed > 3 id not available in “it” table.
+		    insert into employee values(10,'rakesh',40000,4)  -- not allowed > 3 id not available in â€œitâ€ table.
 			select * from employee;
 			select * from it;
 			
