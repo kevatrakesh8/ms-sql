@@ -1,4 +1,4 @@
-use northwind;	
+ use northwind;	
 select *  from Customers;
 select *  from Categories;
 select *  from CustomerCustomerDemo;
@@ -32,6 +32,17 @@ select *  from Territories;
 --Section 15. Expressions
 --Section 16. Useful Tips
 
+--Query Excution Plan  
+--From
+--Where
+--Group By
+--Having
+--Select
+
+--Order By 
+--Distinct
+--Top           // This is basic flow of Excuting Plan.
+
 
 
 --Section 1. Querying data
@@ -47,45 +58,45 @@ select *  from Territories;
 ===============================================================================================
 
 --Section 3. Limiting rows
-	--OFFSET FETCH – limit the number of rows returned by a query.
+	--OFFSET FETCH â€“ limit the number of rows returned by a query.
 		select *  from EmployeeTerritories;
 		select *  from EmployeeTerritories ORDER BY TerritoryID  OFFSET 10 rows;
 		select *  from EmployeeTerritories ORDER BY TerritoryID  OFFSET 10 rows
 												             FETCH NEXT 10 ROWS ONLY;  -- Remove starting 10 Lines and show only next 10 Records;
 
-    --SELECT TOP – limit the number of rows or percentage of rows returned in a query’s result set.
+    --SELECT TOP â€“ limit the number of rows or percentage of rows returned in a queryâ€™s result set.
 	   select TOP 4 FirstName,LastName, city from  Employees Order By FirstName ASC ;
 	   select tOP 6 CompanyName, Address from Customers Order By CompanyName Desc;
 =====================================================================================================
 
 --Section 4. Filtering data	
-	--DISTINCT  – select distinct values in one or more columns of a table.
+	--DISTINCT  â€“ select distinct values in one or more columns of a table.
 	SELECT DISTINCT FirstName,LastName, city FROM  Employees ORDER BY FirstName ASC ;
 	SELECT DISTINCT CompanyName, Address FROM Customers ORDER BY  CompanyName DESC;
 
-	--WHERE – filter rows in the output of a query based on one or more conditions.
+	--WHERE â€“ filter rows in the output of a query based on one or more conditions.
 	 SELECT FirstName,LastName, city FROM  Employees WHERE City = 'London' ORDER BY FirstName ASC ;
 	 SELECT CompanyName, Address, Country FROM Customers WHERE Country ='UK' ORDER BY  CompanyName DESC;
 
-	--AND – combine two Boolean expressions and return true if all expressions are true.
+	--AND â€“ combine two Boolean expressions and return true if all expressions are true.
 		 SELECT FirstName,LastName, city, Country FROM  Employees WHERE City = 'London' AND Country ='UK'  ORDER BY FirstName ASC ;
 		 SELECT CompanyName, Address, Country FROM Customers WHERE Country ='USA' AND ContactTitle = 'owner' ORDER BY  CompanyName DESC;
 
-	--OR–  combine two Boolean expressions and return true if either of conditions is true.
+	--ORâ€“  combine two Boolean expressions and return true if either of conditions is true.
 		 SELECT FirstName,LastName, city, Country FROM  Employees WHERE City = 'London' OR Country ='UK'  ORDER BY FirstName ASC ;
 		 SELECT CompanyName, Address, Country FROM Customers WHERE Country ='USA' OR ContactTitle = 'owner' ORDER BY  CompanyName DESC;
 		 SELECT FirstName,LastName, city, Country FROM  Employees WHERE (City = 'London' AND City = 'Tacoma')  OR Country ='UK'  ORDER BY FirstName ASC ;
 		 
-	--IN – check whether a value matches any value in a list or a subquery.
+	--IN â€“ check whether a value matches any value in a list or a subquery.
 		SELECT *  FROM [Order Details] WHERE Quantity IN (10,12,14,18,20,25,40,30) ORDER BY OrderID ASC;
 		SELECT FirstName,LastName, city FROM  Employees WHERE City  IN ('London','Tacoma','Seattle') ORDER BY FirstName ASC ;
 		SELECT CompanyName, Address, Country FROM Customers WHERE Country  IN ('UK','France','Spain') ORDER BY  CompanyName DESC;
 
-	--BETWEEN – test if a value is between a range of values.
+	--BETWEEN â€“ test if a value is between a range of values.
 		SELECT *  FROM [Order Details] WHERE Quantity BETWEEN 10 AND 15 ORDER BY OrderID ASC;
 		SELECT *  FROM Orders WHERE OrderDate BETWEEN CONVERT(datetime,'1996-07-10 00:00:00.000') AND CONVERT(datetime,'1996-07-23 00:00:00.000');
 
-	--LIKE  –  check if a character string matches a specified pattern.
+	--LIKE  â€“  check if a character string matches a specified pattern.
 		--The percent wildcard (%): any string of zero or more characters.
 		--The underscore (_) wildcard: any single character.
 		--The [list of characters] wildcard: any single character within the specified set.
@@ -102,41 +113,41 @@ select *  from Territories;
 		SELECT * From Customers WHERE CompanyName LIKE '[^A-B]%';  -- character list e.g., [ABC] represent a single character that is not in the specified range or character list.
 		SELECT * From Customers WHERE CompanyName NOT LIKE 'A%';    -- Do not Start with Name of 'A' charactor.
 
-	--Column & table aliases – show you how to use column aliases to change the heading of the query output and table alias to improve the readability of a query.
+	--Column & table aliases â€“ show you how to use column aliases to change the heading of the query output and table alias to improve the readability of a query.
 		 SELECT FirstName + '' + LastName AS Full_Name FROM  Employees WHERE City = 'London' AND Country ='UK'  ORDER BY FirstName ASC;
 		
 --Section 5. Joining tables
-		--INNER JOIN – select rows from a table that have matching rows in another table.
-		--LEFT JOIN – return all rows from the left table and matching rows from the right table. In case the right table does not have the matching rows, use null values for the column values from the right table.
-		--RIGHT JOIN – learn a reversed version of the left join.
-		--FULL OUTER JOIN – return matching rows from both left and right tables, and rows from each side if no matching rows exist.
-		--CROSS JOIN – join multiple unrelated tables and create Cartesian products of rows in the joined tables.
-		--Self join – show you how to use the self-join to query hierarchical data and compare rows within the same table.
+		--INNER JOIN â€“ select rows from a table that have matching rows in another table.
+		--LEFT JOIN â€“ return all rows from the left table and matching rows from the right table. In case the right table does not have the matching rows, use null values for the column values from the right table.
+		--RIGHT JOIN â€“ learn a reversed version of the left join.
+		--FULL OUTER JOIN â€“ return matching rows from both left and right tables, and rows from each side if no matching rows exist.
+		--CROSS JOIN â€“ join multiple unrelated tables and create Cartesian products of rows in the joined tables.
+		--Self join â€“ show you how to use the self-join to query hierarchical data and compare rows within the same table.
 
 	
-		--INNER JOIN –	
+		--INNER JOIN â€“	
 		SELECT * FROM  Employees;
 	    SELECT * FROM Orders;
 		SELECT e.FirstName, e.LastName, o.ShipName, o.ShipCountry FROM Employees e INNER JOIN Orders o ON e.EmployeeID = o.EmployeeID;
 		
-		--LEFT JOIN –	
+		--LEFT JOIN â€“	
 		SELECT e.FirstName, e.LastName, o.ShipName, o.ShipCountry FROM Employees e LEFT JOIN Orders o ON e.EmployeeID = o.EmployeeID;
 		
-		--RIGHT JOIN –
+		--RIGHT JOIN â€“
 		SELECT e.FirstName, e.LastName, o.ShipName, o.ShipCountry FROM Employees e RIGHT JOIN Orders o ON e.EmployeeID = o.EmployeeID;
 		
-		--FULL OUTER JOIN –
+		--FULL OUTER JOIN â€“
 		SELECT e.FirstName, e.LastName, o.ShipName, o.ShipCountry FROM Employees e FULL OUTER JOIN Orders o ON e.EmployeeID = o.EmployeeID;
 		
 		--CROSS JOIN--
 		SELECT FirstName, LastName, ShipName, ShipCountry FROM Employees CROSS JOIN Orders;  
 		
-		--Self join –
+		--Self join â€“
 		SELECT FirstName + ''+ LastName FullName, ShipName, ShipCountry FROM Employees CROSS JOIN Orders;  
 		
 --Section 6. Grouping data
-	--GROUP BY– group the query result based on the values in a specified list of column expressions.
-	--HAVING – specify a search condition for a group or an aggregate.
+	--GROUP BYâ€“ group the query result based on the values in a specified list of column expressions.
+	--HAVING â€“ specify a search condition for a group or an aggregate.
 	 
 	--Group By--(selected and Group parameter should be same. )
 	SELECT CustomerId, ContactTitle FROM Customers WHERE City  IN ('London','Tacoma','Seattle') GROUP BY ContactTitle,CustomerId ORDER BY ContactTitle;
@@ -146,7 +157,7 @@ select *  from Territories;
 	Select ShipName From Orders GROUP BY ShipName;
 	Select Count(OrderID), ShipName From Orders GROUP BY ShipName;
 
-	--HAVING –The following SQL statement lists the number of customers in each country. Only include countries with more than 5 customers:
+	--HAVING â€“The following SQL statement lists the number of customers in each country. Only include countries with more than 5 customers:
 	SELECT Count(CustomerID) as CustomerCount, Country FROM Customers GROUP BY Country;
 	SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country HAVING COUNT(CustomerID) > 5; 
 	
@@ -156,44 +167,44 @@ select *  from Territories;
 
 
 -- Section 7. Subquery
-	--Subquery – explain the subquery concept and show you how to use various subquery type to select data.
-	--Correlated subquery – introduce you to the correlated subquery concept.
-	--EXISTS – test for the existence of rows returned by a subquery.
-	--ANY – compare a value with a single-column set of values returned by a subquery and return TRUE the value matches any value in the set.
-	--ALL – compare a value with a single-column set of values returned by a subquery and return TRUE the value matches all values in the set.
-	--Subquery –
+	--Subquery â€“ explain the subquery concept and show you how to use various subquery type to select data.
+	--Correlated subquery â€“ introduce you to the correlated subquery concept.
+	--EXISTS â€“ test for the existence of rows returned by a subquery.
+	--ANY â€“ compare a value with a single-column set of values returned by a subquery and return TRUE the value matches any value in the set.
+	--ALL â€“ compare a value with a single-column set of values returned by a subquery and return TRUE the value matches all values in the set.
+	--Subquery â€“
 	Select * From Customers;  
 	Select  Country From Customers GROUP BY Country;
 	Select  CustomerID From Customers Where Country = 'USA';
 	select * From Orders
 	Select CustomerID, EmployeeID From Orders Where CustomerID IN ( Select  CustomerID From Customers Where Country = 'USA');  -- above the statement data.
 	
-	--EXISTS – {WHERE EXISTS ( subquery )};
+	--EXISTS â€“ {WHERE EXISTS ( subquery )};
 	  DELETE FROM contacts
 WHERE EXISTS (SELECT *
               FROM employees
               WHERE employees.last_name = contacts.last_name);  P -- Dont Use this command. 
 		
-	----ANY – 
+	----ANY â€“ 
 	Select CustomerID, CompanyName,City From Customers Where CustomerID  = 'ANTON'
 	Select CustomerID From Orders Where Freight > 50;
 	--<BR>
 	Select CustomerID, CompanyName,City From Customers Where CustomerID  = ANY(Select CustomerID From Orders Where Freight > 50)
 	
-	--ALL –	
+	--ALL â€“	
 	 Select * From Orders Where Freight < 50; 
 	 Select  Freight From Orders Where Freight > 50;
 	 --<BR>--
 	Select * From Orders Where Freight < ALL(Select  Freight From Orders Where Freight > 50 );	  
 
 --Section 8. Set Operators;
-            --UNION – combine the result sets of two or more queries into a single result set.
+            --UNION â€“ combine the result sets of two or more queries into a single result set.
 			Select CustomerID From Customers UNION Select  CustomerID From Orders;
 
-			--INTERSECT – return the intersection of the result sets of two or more queries.
+			--INTERSECT â€“ return the intersection of the result sets of two or more queries.
 			Select CustomerID From Customers INTERSECT Select  CustomerID From Orders;
 
-			--EXCEPT – find the difference between the two result sets of two input queries.
+			--EXCEPT â€“ find the difference between the two result sets of two input queries.
 			Select CustomerID From Customers EXCEPT Select  CustomerID From Orders;
  
 --Section 11. Modifying data
@@ -261,13 +272,13 @@ WHERE EXISTS (SELECT *
 
 
 --Section 14. Constraints
-		--Primary key  – explain you to the primary key concept and show you how to use the primary key constraint to manage a primary key of a table.
+		--Primary key  â€“ explain you to the primary key concept and show you how to use the primary key constraint to manage a primary key of a table.
 		CREATE TABLE sales.activities (
 				activity_id INT PRIMARY KEY IDENTITY,
 				activity_name VARCHAR (255) NOT NULL,
 				activity_date DATE NOT NULL
 			);
-		--Foreign key – introduce you to the foreign key concept and show you use the FOREIGN KEY constraint to enforce the link of data in two tables.
+		--Foreign key â€“ introduce you to the foreign key concept and show you use the FOREIGN KEY constraint to enforce the link of data in two tables.
 			CREATE TABLE sales.visits (
 			visit_id INT PRIMARY KEY IDENTITY (1, 1),
 			first_name VARCHAR (50) NOT NULL,
@@ -278,7 +289,7 @@ WHERE EXISTS (SELECT *
 			FOREIGN KEY (store_id) REFERENCES sales.stores (store_id)
 		);
 		
-		--NOT NULL constraint – show you how to ensure a column not to accept NULL.
+		--NOT NULL constraint â€“ show you how to ensure a column not to accept NULL.
 		--Create Not Null data 
 		CREATE TABLE hr.persons(
 				person_id INT IDENTITY PRIMARY KEY,
@@ -299,7 +310,7 @@ WHERE EXISTS (SELECT *
 			ALTER TABLE hr.pesons
 			ALTER COLUMN phone VARCHAR(20) NULL;
 
-		--UNIQUE constraint – ensure that data contained in a column, or a group of columns, is unique among rows in a table.
+		--UNIQUE constraint â€“ ensure that data contained in a column, or a group of columns, is unique among rows in a table.
 		CREATE TABLE hr.persons(
 			person_id INT IDENTITY PRIMARY KEY,
 			first_name VARCHAR(255) NOT NULL,
@@ -323,7 +334,7 @@ WHERE EXISTS (SELECT *
 		ALTER TABLE table_name
 		DROP CONSTRAINT constraint_name;
 
-		--CHECK constraint – walk you through the process of adding logic for checking data before storing them in tables.
+		--CHECK constraint â€“ walk you through the process of adding logic for checking data before storing them in tables.
 		CREATE TABLE test.products(
 			product_id INT IDENTITY PRIMARY KEY,
 			product_name VARCHAR(255) NOT NULL,
@@ -357,7 +368,7 @@ WHERE EXISTS (SELECT *
 			NO CHECK CONSTRAINT valid_price;
 
 --Section 15. Expressions
-				--A--CASE – add if-else logic to SQL queries by using simple and searched CASE expressions.
+				--A--CASE â€“ add if-else logic to SQL queries by using simple and searched CASE expressions.
 				   SELECT    
 					EmployeeID, 
 					COUNT(OrderID) order_count FROM orders WHERE YEAR(OrderDate) = 1996 GROUP BY EmployeeID;
@@ -428,13 +439,13 @@ WHERE EXISTS (SELECT *
 				  id.ProductID;
 				   
 --Section 16. Useful Tips
-	--Find duplicates – show you how to find duplicate values in one or more columns of a table.
+	--Find duplicates â€“ show you how to find duplicate values in one or more columns of a table.
 
 			SELECT Name, EmailID, COUNT(*)
 			FROM HouseOwner
 			GROUP BY Name, EmailID
 			HAVING COUNT(*) > 1
-	--Delete duplicates – describe how to remove duplicate rows from a table.
+	--Delete duplicates â€“ describe how to remove duplicate rows from a table.
 --HouseOwner
 --ID  NAME    EMAILID
 --1	Rakesh	kevatrakesh81@gmail.com
@@ -549,16 +560,16 @@ WHERE EXISTS (SELECT *
 		--Indexes are special data structures associated with tables or views that help speed up the query. 
 		--Server provides two types of indexes: clustered index and non-clustered index.
 
-			--Clustered indexes – introduction to clustered indexes and learn how to create clustered indexes for tables.
-			--Create nonclustered indexes – learn how to create non-clustered indexes using the CREATE INDEX statement.
-			--Rename indexes – replace the current index name with the new name using sp_rename stored procedure and SQL Server Management Studio.
-			--Disable indexes – show you how to disable indexes of a table to make the indexes ineffective.
-			--Enable indexes – learn various statements to enable one or all indexes on a table.
-			--Unique indexes – enforce the uniqueness of values in one or more columns.
-			--Drop indexes – describe how to drop indexes from one or more tables.
-			--Indexes with included columns – describe how to add non-key columns to a nonclustered index to improve the speed of queries.
-			--Filtered indexes – learn how to create an index on a portion of rows in a table.
-			--Indexes on computed columns – walk you through how to simulate function-based indexes using the indexes on computed columns.
+			--Clustered indexes â€“ introduction to clustered indexes and learn how to create clustered indexes for tables.
+			--Create nonclustered indexes â€“ learn how to create non-clustered indexes using the CREATE INDEX statement.
+			--Rename indexes â€“ replace the current index name with the new name using sp_rename stored procedure and SQL Server Management Studio.
+			--Disable indexes â€“ show you how to disable indexes of a table to make the indexes ineffective.
+			--Enable indexes â€“ learn various statements to enable one or all indexes on a table.
+			--Unique indexes â€“ enforce the uniqueness of values in one or more columns.
+			--Drop indexes â€“ describe how to drop indexes from one or more tables.
+			--Indexes with included columns â€“ describe how to add non-key columns to a nonclustered index to improve the speed of queries.
+			--Filtered indexes â€“ learn how to create an index on a portion of rows in a table.
+			--Indexes on computed columns â€“ walk you through how to simulate function-based indexes using the indexes on computed columns.
 
 			Create table tbl_Poly_Employee(
 			ID int Primary Key,
@@ -592,7 +603,7 @@ WHERE EXISTS (SELECT *
 	Drop index tbl_Poly_Employee.IX_tbl_Poly_Employee_Salary 
 
 
-	--Clustered indexes – introduction to clustered indexes and learn how to create clustered indexes for tables.
+	--Clustered indexes â€“ introduction to clustered indexes and learn how to create clustered indexes for tables.
 			Create table tbl_Poly_Employee(
 			ID int Primary Key,    -- Primary key is clustered index.
 			Name nvarchar(20),
@@ -603,3 +614,31 @@ WHERE EXISTS (SELECT *
 			Create index IX_tbl_Poly_Employee_Salary_Gender
 	        ON tbl_Poly_Employee(Gender Desc,Salary ASC)  -- First Gender and then Salary.
 			select * from tbl_Poly_Employee;
+
+	--Rename indexes â€“ replace the current index name with the new name using sp_rename stored procedure and SQL Server Management Studio.
+	        --Path-- Northwind>Tables>dbo.tbl_Poly_Employee>Indexes>IX_tbl_Poly_Employee_Salary
+		
+			Create index IX_tbl_Poly_Employee_Salary_Gender_OLD
+	        ON tbl_Poly_Employee(Gender Desc,Salary ASC)  -- First Gender and then Salary.
+			select * from tbl_Poly_Employee;
+			--ex
+			EXEC sp_rename N'sales.table.IX1', N'IX2', N'INDEX';  
+
+			EXEC sp_rename 
+				N'tbl.Index_name_Old,
+				N'Index_name_New' ,
+				N'INDEX'; 
+
+			EXEC sp_rename  
+				N'tbl_Poly_Employee.IX_tbl_Poly_Employee_Salary_Gender_OLD',
+				N'IX_tbl_Poly_Employee_Salary_Gender_New1' ,
+				N'INDEX';
+
+
+
+				USE AdventureWorks2012;  
+GO  
+--Renames the IX_ProductVendor_VendorID index on the Purchasing.ProductVendor table to IX_VendorID.   
+
+EXEC sp_rename N'Purchasing.ProductVendor.IX_ProductVendor_VendorID', N'IX_VendorID', N'INDEX';   
+GO
