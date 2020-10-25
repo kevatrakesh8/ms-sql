@@ -1,4 +1,4 @@
-use northwind;	
+ use northwind;	
 select *  from Customers;
 select *  from Categories;
 select *  from CustomerCustomerDemo;
@@ -18,9 +18,9 @@ select *  from Territories;
 --Section 18 --Views
 --Section 19 --Indexes
 --Section 20 -- Stored Procedures
-
-
-
+--Section 21. -- Cursors
+--Section 22.-- Handling Exceptions 
+--Section 23 --Dynamic SQL
 
 
 --Section 18-- SQL Server Views(A view is a virtual table created according to the result set of an SQL statement.)
@@ -50,16 +50,16 @@ select *  from Territories;
 		--Indexes are special data structures associated with tables or views that help speed up the query. 
 		--Server provides two types of indexes: clustered index and non-clustered index.
 
-			--Clustered indexes – introduction to clustered indexes and learn how to create clustered indexes for tables.
-			--Create nonclustered indexes – learn how to create non-clustered indexes using the CREATE INDEX statement.
-			--Rename indexes – replace the current index name with the new name using sp_rename stored procedure and SQL Server Management Studio.
-			--Disable indexes – show you how to disable indexes of a table to make the indexes ineffective.
-			--Enable indexes – learn various statements to enable one or all indexes on a table.
-			--Unique indexes – enforce the uniqueness of values in one or more columns.
-			--Drop indexes – describe how to drop indexes from one or more tables.
-			--Indexes with included columns – describe how to add non-key columns to a nonclustered index to improve the speed of queries.
-			--Filtered indexes – learn how to create an index on a portion of rows in a table.
-			--Indexes on computed columns – walk you through how to simulate function-based indexes using the indexes on computed columns.
+			--Clustered indexes â€“ introduction to clustered indexes and learn how to create clustered indexes for tables.
+			--Create nonclustered indexes â€“ learn how to create non-clustered indexes using the CREATE INDEX statement.
+			--Rename indexes â€“ replace the current index name with the new name using sp_rename stored procedure and SQL Server Management Studio.
+			--Disable indexes â€“ show you how to disable indexes of a table to make the indexes ineffective.
+			--Enable indexes â€“ learn various statements to enable one or all indexes on a table.
+			--Unique indexes â€“ enforce the uniqueness of values in one or more columns.
+			--Drop indexes â€“ describe how to drop indexes from one or more tables.
+			--Indexes with included columns â€“ describe how to add non-key columns to a nonclustered index to improve the speed of queries.
+			--Filtered indexes â€“ learn how to create an index on a portion of rows in a table.
+			--Indexes on computed columns â€“ walk you through how to simulate function-based indexes using the indexes on computed columns.
 
 			Create table tbl_Poly_Employee(
 			ID int Primary Key,
@@ -93,7 +93,7 @@ select *  from Territories;
 						   Drop index tbl_Poly_Employee.IX_tbl_Poly_Employee_Salary 
 
 
-			--Clustered indexes – introduction to clustered indexes and learn how to create clustered indexes for tables.
+			--Clustered indexes â€“ introduction to clustered indexes and learn how to create clustered indexes for tables.
 								Create table tbl_Poly_Employee(
 								ID int Primary Key,    -- Primary key is clustered index.
 								Name nvarchar(20),
@@ -109,7 +109,7 @@ select *  from Territories;
 								ON tbl_Poly_Employee(Gender Desc,Salary ASC)  -- First Gender and then Salary.
 								select * from tbl_Poly_Employee;
 
-			--Rename indexes – replace the current index name with the new name using sp_rename stored procedure and SQL Server Management Studio.
+			--Rename indexes â€“ replace the current index name with the new name using sp_rename stored procedure and SQL Server Management Studio.
 							--Path-- Northwind>Tables>dbo.tbl_Poly_Employee>Indexes>IX_tbl_Poly_Employee_Salary
 		
 							Create index IX_tbl_Poly_Employee_Salary_Gender_OLD
@@ -131,7 +131,7 @@ select *  from Territories;
 									--	N'INDEX';
 								
 
-			--Disable indexes – show you how to disable indexes of a table to make the indexes ineffective.
+			--Disable indexes â€“ show you how to disable indexes of a table to make the indexes ineffective.
 								ALTER INDEX index_name
 								ON table_name
 								DISABLE;                   --Single index 
@@ -152,7 +152,7 @@ select *  from Territories;
 								Execute sp_helpIndex tbl_Poly_Employee; 
 								Select * from tbl_Poly_Employee  -- it will show error because we disable the table.
 			    
-			--Enable indexes – learn various statements to enable one or all indexes on a table.
+			--Enable indexes â€“ learn various statements to enable one or all indexes on a table.
 					ALTER INDEX index_name 
 					ON table_name  
 					REBUILD;
@@ -169,7 +169,7 @@ select *  from Territories;
 					Select * from tbl_Poly_Employee   -- Its values will be visible.
 					Execute sp_helpIndex tbl_Poly_Employee; 
 
-			--Drop indexes – describe how to drop indexes from one or more tables.
+			--Drop indexes â€“ describe how to drop indexes from one or more tables.
 			
 							DROP INDEX 
 								Index_name1 ON TableName,
@@ -180,10 +180,10 @@ select *  from Territories;
 
 							Execute sp_helpIndex tbl_Poly_Employee; 
 				 
-			--Unique indexes – enforce the uniqueness of values in one or more columns.			
-			--Indexes with included columns – describe how to add non-key columns to a nonclustered index to improve the speed of queries.
-			--Filtered indexes – learn how to create an index on a portion of rows in a table.
-			--Indexes on computed columns – walk you through how to simulate function-based indexes using the indexes on computed columns.
+			--Unique indexes â€“ enforce the uniqueness of values in one or more columns.			
+			--Indexes with included columns â€“ describe how to add non-key columns to a nonclustered index to improve the speed of queries.
+			--Filtered indexes â€“ learn how to create an index on a portion of rows in a table.
+			--Indexes on computed columns â€“ walk you through how to simulate function-based indexes using the indexes on computed columns.
 			 
 					 
 			-- Index Basic Operations.....
@@ -210,7 +210,7 @@ select *  from Territories;
 
 --Section 20 -- Stored Procedures
 			--Section A. Getting started with SQL Server Stored Procedures
-					--A basic guide to stored procedures – show you how to create, execute, modify, and drop a stored procedure in SQL Server.
+					--A basic guide to stored procedures â€“ show you how to create, execute, modify, and drop a stored procedure in SQL Server.
 						--Create Procedure
 						CREATE PROCEDURE sp_name
 							AS
@@ -277,7 +277,7 @@ select *  from Territories;
 							DROP PROCEDURE sp_ShowAllCustomerData;
 
 
-					--Parameters – learn how to create stored procedures with parameters, including optional parameters.
+					--Parameters â€“ learn how to create stored procedures with parameters, including optional parameters.
 						Select * From Orders;
 						Select OrderID, ShipName from Orders Where  Freight >10 ;
 						Select OrderID, ShipName, Freight, ShipVia from Orders Where  Freight >10  And ShipVia =3 ;
@@ -307,9 +307,9 @@ select *  from Territories;
 							Exec sp_FindOrders_two_parameter @a=10, @b=3;
 							
 
-					--Variables  –  introduce you to Transact-SQL variables and how to manipulate variables in stored procedures.
-					--Output Parameters –-guide you on how to return data from a stored procedure back to the calling program using the output parameters.
-										--The simple logic is this — If you want to return 1 value then use 1 output parameter, 
+					--Variables  â€“  introduce you to Transact-SQL variables and how to manipulate variables in stored procedures.
+					--Output Parameters â€“-guide you on how to return data from a stored procedure back to the calling program using the output parameters.
+										--The simple logic is this â€” If you want to return 1 value then use 1 output parameter, 
 										--for returning 5 values use 5 output parameters,
 										--for 10 use 10, and so on.
 
@@ -333,7 +333,7 @@ select *  from Territories;
 												PRINT @OrderTotal
 
 
-
+						
 
 
 
@@ -356,4 +356,344 @@ select *  from Territories;
 											@CustomerCount = @count OUTPUT;
 										SELECT @count AS 'Number of products found';
 
-														 
+											
+											
+						--BEGINâ€¦END â€“ create a statement block that consists of multiple Transact-SQL statements that execute together.
+						--IF ELSE â€“ execute a statement block based on a condition.
+						--WHILE â€“ repeatedly execute a set of statements based on a condition as long as the condition is true.
+						--BREAK â€“ exit the loop immediately and skip the rest of the code after it within a loop.
+						--CONTINUE â€“ skip the current iteration of the loop immediately and continue the next one.
+
+						--BEGINâ€¦END â€“ create a statement block that consists of multiple Transact-SQL statements that execute together.
+						           --The following illustrates the syntax of the BEGIN...END statement:
+
+									--BEGIN
+									--    { sql_statement | statement_block}
+									--END
+
+						Example : 
+								  BEGIN
+									SELECT OrderID,CustomerID,Freight From Orders WHERE Freight > 10;							 
+									IF @@ROWCOUNT= 0
+										PRINT 'No product with price greater than 100000 found';
+									END
+
+					   Example :SELECT TOP 1 ProductName FROM Products ORDER BY	UnitPrice DESC;
+								
+								BEGIN
+									DECLARE @name VARCHAR(MAX);
+
+									SELECT TOP 5 @name = ProductName FROM Products ORDER BY	UnitPrice DESC;
+    
+										IF @@ROWCOUNT <> 0
+									BEGIN
+										PRINT 'The most expensive product is ' + @name
+									END
+										ELSE
+									BEGIN
+										PRINT 'No product found';
+									END;
+								END
+
+					 --IF ELSE â€“ execute a statement block based on a condition.
+					 -- Select SUM(UnitPrice * Quantity) from [Order Details];
+					 --Examples -
+						BEGIN
+							DECLARE @sales INT;
+							SELECT @sales = SUM(UnitPrice * Quantity) FROM [Order Details] WHERE Discount = 0;
+
+							IF @sales > 100
+							BEGIN
+								PRINT 'Great! The sales amount in 2018 is greater than 1,000,000';
+							END
+						END
+						Example 2 : 
+
+						BEGIN
+							DECLARE @x INT = 10,
+									@y INT = 20;
+
+							IF (@x > 0)
+							BEGIN
+								IF (@x < @y)
+									PRINT 'x > 0 and x < y';
+								ELSE
+									PRINT 'x > 0 and x >= y';
+							END			
+						END
+
+						--WHILE â€“ repeatedly execute a set of statements based on a condition as long as the condition is true.
+						--Examples : 
+								DECLARE @counter INT = 1;
+
+									WHILE @counter <= 5
+									BEGIN
+										PRINT @counter;
+										SET @counter = @counter + 1;
+									END
+						--BREAK â€“ exit the loop immediately and skip the rest of the code after it within a loop.
+						
+
+									DECLARE @counter INT = 0;
+
+										WHILE @counter <= 5
+									BEGIN
+										SET @counter = @counter + 1;
+										IF @counter = 4
+											BREAK;
+										PRINT @counter;
+									END	
+
+
+					--CONTINUE â€“ skip the current iteration of the loop immediately and continue the next one.
+						--Examples : 
+							DECLARE @counter INT = 0;
+								WHILE @counter < 5
+								BEGIN
+									SET @counter = @counter + 1;
+									IF @counter = 3
+										CONTINUE;	
+									PRINT @counter;
+								END
+
+
+--Section 21. Cursors
+			 --Cursor  â€“ show you how to handle cursors.
+			 --Only Used for Row by Row Print.
+			 -- One ID fetch next id row by row process.
+			---Process:  --Declare
+						 --Declare cursor_name 
+						 --Select Table ID
+						 --Open Cursor
+						 --Fetch next ID
+						 --While loop
+						 --Close Courser
+						 --Deallocate Courser
+select *  from [Order Details];					
+select Ceiling(Rand() *100);
+Select OrderID, UnitPrice, Ceiling(Rand() *100)  As Discount From  [Order Details];
+ 
+ Declare @MyID int      --Custom ID
+
+ Declare order_cursor Cursor for
+ Select OrderID From [Order Details]      
+
+ Open order_cursor
+ Fetch next from order_cursor into @MyID              
+
+While (@@FETCH_STATUS = 0)  --USE LOOP
+BEGIN
+	Select OrderID, UnitPrice, Ceiling(Rand() *100)  As Discount From  [Order Details]  --Basic Query
+	WHERE OrderID = @MyID; 
+	Fetch next from order_cursor into @MyID           
+END
+
+Close order_cursor
+DEALLOCATE order_cursor
+
+--Section 21. Handling Exceptions
+			--TRY CATCH â€“ learn how to handle exceptions gracefully in stored procedures.
+			--RAISERROR â€“ show you how to generate user-defined error messages and return it back to the application using the same format as the system error.
+			--THROW â€“ walk you through the steps of raising an exception and transferring the execution to the CATCH block of a TRY CATCH construct.
+
+
+			--TRY CATCH â€“ learn how to handle exceptions gracefully in stored procedures.
+					--The following illustrates a complete TRY CATCH construct:
+
+					--	BEGIN TRY  
+					--	   -- statements that may cause exceptions
+					--	END TRY 
+					--	BEGIN CATCH  
+					--	   -- statements that handle exception
+					--	END CATCH 
+
+		       Examples : 
+							CREATE PROC usp_divide(
+								@a decimal,
+								@b decimal,
+								@c decimal output
+							) AS
+							BEGIN
+								BEGIN TRY
+									SET @c = @a / @b;
+								END TRY
+								BEGIN CATCH
+									SELECT  
+										 ERROR_NUMBER() AS ErrorNumber  
+										,ERROR_SEVERITY() AS ErrorSeverity  
+										,ERROR_STATE() AS ErrorState  
+										,ERROR_PROCEDURE() AS ErrorProcedure  
+										,ERROR_LINE() AS ErrorLine  
+										,ERROR_MESSAGE() AS ErrorMessage;  
+								END CATCH
+							END;
+				      GO	
+			--		  Examples : 1
+					    DECLARE @r decimal;
+						EXEC usp_divide 10, 2, @r output;
+						PRINT @r;
+			--		Examples 2: 
+						DECLARE @r2 decimal;
+						EXEC usp_divide 10, 0, @r2 output;
+						PRINT @r2;
+			--		Examples 3: 			   
+						CREATE TABLE sales.persons
+						(
+							person_id  INT
+							PRIMARY KEY IDENTITY, 
+							first_name NVARCHAR(100) NOT NULL, 
+							last_name  NVARCHAR(100) NOT NULL
+						);
+
+						CREATE TABLE sales.deals
+						(
+							deal_id   INT
+							PRIMARY KEY IDENTITY, 
+							person_id INT NOT NULL, 
+							deal_note NVARCHAR(100), 
+							FOREIGN KEY(person_id) REFERENCES sales.persons(
+							person_id)
+						);
+
+						insert into 
+							sales.persons(first_name, last_name)
+						values
+							('John','Doe'),
+							('Jane','Doe');
+
+						insert into 
+							sales.deals(person_id, deal_note)
+						values
+							(1,'Deal for John Doe');
+
+			--		Block to report the detailed information of an error:3:  --
+						CREATE PROC usp_report_error
+								AS
+									SELECT   
+										ERROR_NUMBER() AS ErrorNumber  
+										,ERROR_SEVERITY() AS ErrorSeverity  
+										,ERROR_STATE() AS ErrorState  
+										,ERROR_LINE () AS ErrorLine  
+										,ERROR_PROCEDURE() AS ErrorProcedure  
+										,ERROR_MESSAGE() AS ErrorMessage;  
+								GO
+
+			--	deletes a row from the sales.persons
+						CREATE PROC usp_delete_person(
+						@person_id INT
+							) AS
+							BEGIN
+								BEGIN TRY
+									BEGIN TRANSACTION;
+									-- delete the person
+									DELETE FROM sales.persons 
+										WHERE person_id = @person_id;
+									-- if DELETE succeeds, commit the transaction
+									COMMIT TRANSACTION;  
+								END TRY
+								BEGIN CATCH
+									-- report exception
+									EXEC usp_report_error;
+        
+									-- Test if the transaction is uncommittable.  
+									IF (XACT_STATE()) = -1  
+									BEGIN  
+										PRINT  N'The transaction is in an uncommittable state.' +  
+												'Rolling back transaction.'  
+										ROLLBACK TRANSACTION;  
+									END;  
+        
+									-- Test if the transaction is committable.  
+									IF (XACT_STATE()) = 1
+									BEGIN
+										PRINT N'The transaction is committable.' +
+											'Committing transaction.' 
+										COMMIT TRANSACTION;     
+									END;  
+								END CATCH
+							END;
+							GO
+
+							EXEC usp_delete_person 2;  --row affected
+							EXEC usp_delete_person 1;  --Catch error show
+
+
+			 
+--Section 23 --Dynamic SQL
+
+				'SELECT * FROM Products';
+				EXEC sp_executesql N'SELECT * FROM  products';
+
+				--sp_executesql accepts the dynamic SQL as a Unicode string,
+				--@table for holding the name of the table from which you want to query and 
+				--@sql for holding the dynamic SQL.
+
+				DECLARE 
+					@table1 NVARCHAR(128),
+					@sql1 NVARCHAR(MAX);
+
+					SET @table1 = N'products';
+					SET @sql1 = N'SELECT * FROM ' + @table1;
+
+					DECLARE 
+						@table NVARCHAR(128),
+						@sql NVARCHAR(MAX);
+
+					SET @table = N'production.products';
+
+					SET @sql = N'SELECT * FROM ' + @table1;
+
+					EXEC sp_executesql @sql1;
+					--or
+					SELECT * FROM  products;
+
+				--Examples : 
+				       CREATE OR ALTER PROC usp_query_topn(
+							@table NVARCHAR(128),
+							@topN INT,
+							@byColumn NVARCHAR(128)
+						)
+						AS
+						BEGIN
+							DECLARE 
+								@sql NVARCHAR(MAX),
+								@topNStr NVARCHAR(MAX);
+
+							SET @topNStr  = CAST(@topN as nvarchar(max));
+
+							-- construct SQL
+							SET @sql = N'SELECT TOP ' +  @topNStr  + 
+										' * FROM ' + @table + 
+											' ORDER BY ' + @byColumn + ' DESC';
+							-- execute the SQL
+							EXEC sp_executesql @sql;
+    
+						END;
+
+		   --Examples :  
+
+				CREATE OR ALTER PROC usp_query_topn(
+						@table NVARCHAR(128),
+						@topN INT,
+						@byColumn NVARCHAR(128)
+					)
+					AS
+					BEGIN
+						DECLARE 
+							@sql NVARCHAR(MAX),
+							@topNStr NVARCHAR(MAX);
+
+						SET @topNStr  = CAST(@topN as nvarchar(max));
+
+						-- construct SQL
+						SET @sql = N'SELECT TOP ' +  @topNStr  + 
+									' * FROM ' + @table + 
+										' ORDER BY ' + @byColumn + ' DESC';
+						-- execute the SQL
+						EXEC sp_executesql @sql;
+    
+					END;
+
+
+					EXEC usp_query_topn 'products',	10, 'Unit_Price';
+
