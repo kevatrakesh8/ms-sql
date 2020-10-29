@@ -1,4 +1,4 @@
- use northwind;	
+   use northwind;	
 select *  from Customers;
 select *  from Categories;
 select *  from CustomerCustomerDemo;
@@ -21,7 +21,9 @@ select *  from Territories;
 --Section 21. -- Cursors
 --Section 22.-- Handling Exceptions 
 --Section 23 --Dynamic SQL
+--Section 24 --Scalar Functions
 
+--================================================================================================================================================================
 
 --Section 18-- SQL Server Views(A view is a virtual table created according to the result set of an SQL statement.)
 
@@ -45,6 +47,7 @@ select *  from Territories;
 
 		--How to drop a view in SQL
 		   DROP VIEW IF EXISTS Departments_info;
+--================================================================================================================================================================
 
 --Section 19.
 		--Indexes are special data structures associated with tables or views that help speed up the query. 
@@ -207,6 +210,7 @@ select *  from Territories;
 					ON table_name;     --Drop the index
 
 
+--================================================================================================================================================================
 
 --Section 20 -- Stored Procedures
 			--Section A. Getting started with SQL Server Stored Procedures
@@ -341,7 +345,7 @@ select *  from Territories;
 										Select Count(CustomerID) From Customers Where Country = 'UK';
 											
 										Create Procedure Sp_Customers_Count
-										 @CustomerCount int OUTPUT,
+										 @CustomerCount int OUTPUT,	
 										 @Customer_Country nvarchar(20) 
 										As
 										BEGIN
@@ -456,6 +460,7 @@ select *  from Territories;
 									PRINT @counter;
 								END
 
+--================================================================================================================================================================
 
 --Section 21. Cursors
 			 --Cursor  – show you how to handle cursors.
@@ -490,8 +495,9 @@ END
 
 Close order_cursor
 DEALLOCATE order_cursor
+--================================================================================================================================================================
 
---Section 21. Handling Exceptions
+--Section 22. Handling Exceptions
 			--TRY CATCH – learn how to handle exceptions gracefully in stored procedures.
 			--RAISERROR – show you how to generate user-defined error messages and return it back to the application using the same format as the system error.
 			--THROW – walk you through the steps of raising an exception and transferring the execution to the CATCH block of a TRY CATCH construct.
@@ -618,6 +624,7 @@ DEALLOCATE order_cursor
 							EXEC usp_delete_person 1;  --Catch error show
 
 
+--================================================================================================================================================================
 			 
 --Section 23 --Dynamic SQL
 
@@ -694,6 +701,138 @@ DEALLOCATE order_cursor
     
 					END;
 
-
 					EXEC usp_query_topn 'products',	10, 'Unit_Price';
+
+
+--================================================================================================================================================================
+--Section 24 --Scalar Functions
+			--User-defined scalar functions – cover the user-defined scalar functions that allow you to encapsulate complex formula or business logic and reuse them in every query.
+			--Table variables – learn how to use table variables as a return value of user-defined functions.
+			--Table-valued functions – introduce you to inline table-valued function and multi-statement table-valued function to develop user-defined functions that return data of table types.
+			--Removing user-defined functions – learn how to drop one or more existing user-defined functions from the database.
+
+				 -->   Section A > Creating Or Alter a scalar function : SQL Server scalar function takes one or more parameters and returns a single value.
+				 --> Northwind>Programmability>Function>Scalar_valued Function>Sales.fnNetPrice
+					  --Examples: CREATE OR ALTER FUNCTION [schema_name.]function_name (parameter_list)
+							--RETURNS data_type AS
+							--BEGIN
+							--    statements
+							--    RETURN value
+							--END
+ 
+
+							CREATE OR ALTER FUNCTION sales.fnNetPrice(
+									@quantity INT,
+									@UnitPrice DEC(10,2),
+									@discount DEC(4,2)
+								)
+								RETURNS DEC(10,2)
+								AS 
+								BEGIN
+									RETURN @quantity * @UnitPrice * (1 - @discount);
+								END;
+				
+								--Excution (parameter) :
+									SELECT sales.fnNetPrice(12,14,0) Net_profit; 
+
+								-- called the function  :
+									SELECT 
+										OrderID, 
+										SUM(sales.fnNetPrice(quantity, UnitPrice, discount)) net_amount
+									FROM 
+										[Order Details]
+									GROUP BY 
+										OrderID
+									ORDER BY
+										net_amount DESC;
+
+			-->   B> Removing  a scalar function
+			         --DROP FUNCTION [schema_name.]function_name;
+			           DROP FUNCTION sales.udfNetSale;
+		--Sec A	-- Table variable : Table variables are kinds of variables that allow you to hold rows of data, which are similar to temporary tables.
+			--// https://www.sqlshack.com/the-table-variable-in-sql-server/
+			--its same as Temp table but not similar to Temp Table. 
+					   DECLARE @Department TABLE
+						(DepartmentID INT PRIMARY KEY,
+						DepName VARCHAR(40) UNIQUE)
+        
+						INSERT INTO @Department VALUES(1,'Marketing')
+						INSERT INTO @Department VALUES(2,'Finance')
+						INSERT INTO @Department VALUES(3,'Operations ')
+        
+						DECLARE @Employee TABLE
+						(EmployeeID INT PRIMARY KEY IDENTITY(1,1),
+						EmployeeName VARCHAR(40),
+						DepartmentID VARCHAR(40))
+        
+						INSERT INTO @Employee VALUES('Jodie Holloway','1')
+						INSERT INTO @Employee VALUES('Victoria Lyons','2')
+						INSERT INTO @Employee VALUES('Callum Lee','3')
+        
+						select * from @Department Dep inner join @Employee Emp
+						on Dep.DepartmentID = Emp.DepartmentID
+
+
+
+
+						-- You cannot used turn turncate  to delete this 'table variable' Because this is not permanent table its.
+						--Can't use Turncate syntaxt 
+						--Can't use   explicit index
+						--created index 
+					 	DECLARE @TestTable TABLE
+						(
+							Col1 INT NOT NULL PRIMARY KEY ,
+							Col2 INT NOT NULL INDEX Cluster_I1 (Col1,Col2),
+							Col3 INT NOT NULL UNIQUE
+						)
+        
+        
+						SELECT 
+						ind.name,type_desc
+						FROM 
+							 tempdb.sys.indexes ind 
+        
+						where ind.object_id=(
+						SELECT OBJECT_ID FROM tempdb.sys.objects obj WHERE obj.name  IN (
+						SELECT TABLE_NAME FROM tempdb.INFORMATION_SCHEMA.COLUMNS 
+						WHERE  (COLUMN_NAME = 'Col1' OR COLUMN_NAME='Col2' OR COLUMN_NAME='Col3')
+
+			   --Table-valued functions – introduce you to inline table-valued function and multi-statement table-valued function to develop user-defined functions that return data of table types.
+					 --learn how to use SQL Server table-valued function including inline table-valued function and multi-statement valued functions.
+						--A table-valued function is a user-defined function that returns data of a table type.
+						--The return type of a table-valued function is a table, therefore,
+						--you can use the table-valued function just like you would use a table.
+					 --Examples 
+						   -- Create a function and call the fucntion.
+						   -->>rogrammability > Functions > Table-valued Functions
+						   --Keyword : udf(User Define Funcion)
+						   --eg. Show the list of the order on "ShipVia tool "
+						      Select * FROM Orders where ShipVia= 1;
+							Create or   alter FUNCTION udfOrderInYear (
+									@model_year INT
+								)
+								RETURNS TABLE
+								AS
+								RETURN
+							    Select * FROM Orders where ShipVia = @model_year; 
+
+								---EXCE
+								SELECT * FROM udfOrderInYear(1);
+                        
+						
+						--Removing user-defined functions – learn how to drop one or more existing user-defined functions from the database.
+						--DROP FUNCTION statement	
+						-- DROP FUNCTION [ IF EXISTS ] [ schema_name. ] function_name;
+						
+						--Exmp
+						--DROP FUNCTION [IF EXISTS] 
+						--schema_name.function_name1, 
+						--schema_name.function_name2,
+						--...;
+
+						DROP FUNCTION IF EXISTS  [dbo].[udfOrderInYear];
+
+
+
+
 
